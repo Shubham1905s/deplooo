@@ -1,0 +1,81 @@
+/*======================
+    404 page styles
+=======================*/
+
+.page_404 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  font-family: "Arvo", serif;
+  background: #fff;
+}
+
+.four_zero_four_bg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.four_zero_four_bg h1 {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 1rem 0;
+}
+
+.four_zero_four_bg img {
+  max-width: 450px;
+  height: auto;
+}
+
+.contant_box_404 h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  color: #222;
+}
+
+.contant_box_404 p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.link_404 {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background: #39ac31;
+  color: #fff !important;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease-in-out;
+}
+
+.link_404:hover {
+  background: #2e8b2d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .four_zero_four_bg h1 {
+    font-size: 4rem;
+  }
+
+  .contant_box_404 h3 {
+    font-size: 1.4rem;
+  }
+
+  .contant_box_404 p {
+    font-size: 0.9rem;
+  }
+
+  .four_zero_four_bg img {
+    max-width: 180px;
+  }
+}

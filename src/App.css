@@ -1,42 +1,284 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  color-scheme: dark;
+  --bg-dark: #111;
+  --bg-light: #f4f7fb;
+  --card-bg: #1e1e1e;
+  --accent: #61dafb;
+  --accent-hover: #21a1f1;
+  --text-light: #eaeaea;
+  --text-muted: #aaa;
+}
+
+/* Reset */
+body, #root {
+  margin: 0;
+  height: 100%;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* ---------------- HOME PAGE ---------------- */
+.home {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a90e2, #50c9c3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  color: #fff;
+}
+
+.home h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.card-item {
+  background: rgba(0,0,0,0.3);
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+  border: 1px solid var(--accent);
+}
+
+.card-item h3 {
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+
+.card-item button {
+  margin-top: 1rem;
+  background: var(--accent);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.card-item button:hover {
+  background: var(--accent-hover);
+}
+
+/* ---------------- CHAT PAGE ---------------- */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #181818;
+  border-bottom: 1px solid #2b2b2b;
+}
+
+.topbar h1 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--accent);
+}
+
+.topbar a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+/* Message List */
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  background: var(--card-bg);
+  border: 1px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 70%;
+  word-break: break-word;
+}
+
+.message.self {
+  margin-left: auto;
+  background: #2563eb;
+  color: #fff;
+}
+
+.message .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.message .user {
+  color: var(--accent);
+}
+
+.message .text {
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+}
+
+.message .image {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.message .file {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Message Input */
+.message-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #2b2b2b;
+  background: #181818;
+}
+
+.message-input input,
+.message-input button {
+  background: #222;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.message-input input.text {
+  flex: 1;
+  min-width: 150px;
+}
+
+.message-input .name {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.message-input button {
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.message-input button:hover {
+  background: var(--accent-hover);
+}
+
+/* ---------------- RESPONSIVENESS ---------------- */
+
+/* Small phones */
+@media (max-width: 480px) {
+  .home h1 {
+    font-size: 1.6rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .card-item {
+    padding: 1.2rem;
+    border-radius: 14px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .message-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .message-input .name,
+  .message-input .text,
+  .message-input button {
+    width: 100%;
+  }
+
+  .message {
+    max-width: 100%;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Tablets */
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .topbar h1 {
+    font-size: 1rem;
   }
 }
 
-.card {
-  padding: 2em;
+
+
+.message-input .text {
+  flex: 1;
+  min-width: 160px;
+  height: 40px;              /* fixed height (adjust as needed) */
+  max-height: 40px;          /* prevent growing */
+  resize: none;              /* disable manual resizing */
+  line-height: 1.35;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Fira Code", "JetBrains Mono", monospace;
+  overflow-y: auto;          /* scroll if text is too long */
 }
 
-.read-the-docs {
-  color: #888;
+
+/* Plain text messages: keep wrapping */
+.message .text {
+  white-space: pre-wrap;     /* preserves newlines but wraps long lines */
+  margin: 0 0 6px;
+}
+
+/* Code blocks: preserve indentation + allow horizontal scroll */
+.code-block {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Fira Code", "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #eaeaea;
+  overflow-x: auto;
+  white-space: pre;          /* critical: keep tabs + spaces exactly */
+  margin: 0 0 6px;
 }
