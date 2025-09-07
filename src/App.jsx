@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MessageInput from "./components/MessageInput";
@@ -7,11 +6,13 @@ import { subscribeToMessages } from "./services/chatService";
 import NotFound from "./pages/NotFound";
 import "./App.css";
 
-/**
- * Allowed semester ids. keep lowercased to simplify checks.
- * If you later change semester slugs, update this array.
- */
-const SEMESTERS = ["all semester", "semester 1", "semester 2", "semester 3", "semester 4", "semester 5", "semester 6", "semester 7", "semester 8"];
+// Semester communities now include slug (URL) and name (display)
+const SEMESTERS = [
+  { slug: "for-every-fellas", name: "For Every Fellas" },
+  { slug: "cyber-security", name: "Cyber Security" },
+  { slug: "software-testing", name: "Software Testing" },
+  { slug: "dsv", name: "DSV" }
+];
 
 function Home() {
   return (
@@ -19,11 +20,11 @@ function Home() {
       <h1>Jibber - An open Chat For All</h1>
       <div className="cards-container">
         {SEMESTERS.map((s) => (
-          <div key={s} className="card-item">
-            <h3>{s.toUpperCase()}</h3>
-            <p>Join the chat for {s.toUpperCase()} Community</p>
-            {/* fixed Link syntax by using template literal */}
-            <Link to={`/${s}`}>
+          <div key={s.slug} className="card-item">
+            <h3>{s.name.toUpperCase()}</h3>
+            <p>Join the chat for {s.name.toUpperCase()} Community</p>
+            {/* Use slug for the Link */}
+            <Link to={`/${s.slug}`}>
               <button>Enter Chat</button>
             </Link>
           </div>
@@ -35,35 +36,38 @@ function Home() {
 
 function SemesterChat() {
   const { semesterId } = useParams();
-  // normalize for safety
-  const slug = semesterId ? semesterId.toLowerCase() : "";
-
-  // If semesterId is invalid, render NotFound (keeps URL shown as entered).
-  // Alternative: return <Navigate to="/404" replace /> to change URL.
-  if (!SEMESTERS.includes(slug)) {
-    return <NotFound />;
-  }
+  const semester = SEMESTERS.find(s => s.slug === semesterId);
+  if (!semester) return <NotFound />;
 
   const [messages, setMessages] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    // subscribeToMessages should return an unsubscribe function
-    // We'll guard if it doesn't for safety.
-    const unsub = subscribeToMessages(slug, { onData: setMessages });
-    return () => {
-      if (typeof unsub === "function") unsub();
-    };
-  }, [slug]);
+    const unsub = subscribeToMessages(semester.slug, { onData: setMessages });
+    return () => unsub?.();
+  }, [semester.slug]);
+
+  const filtered = messages.filter(
+    m =>
+      m.text?.toLowerCase().includes(search.toLowerCase()) ||
+      m.user?.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="app">
       <header className="topbar">
-        <h1>{slug.toUpperCase()} Chat</h1>
-        <Link to="/">⬅ Back to Home</Link>
+        <h1>{semester.name.toUpperCase()} Chat</h1>
+        <input
+          className="search-box"
+          placeholder="Search messages..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        <Link to="/">⬅ Back</Link>
       </header>
 
-      <MessageList messages={messages} />
-      <MessageInput semesterId={slug} />
+      <MessageList messages={filtered} />
+      <MessageInput semesterId={semester.slug} />
     </div>
   );
 }
@@ -73,19 +77,13 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-
-        {/* keep a single dynamic route but we validate inside SemesterChat */}
+        {/* Dynamic semester route */}
         <Route path="/:semesterId" element={<SemesterChat />} />
-
-        {/* optional explicit 404 route */
-        /* you can also redirect to /404 if you prefer URL change */ }
+        {/* Optional explicit 404 route */}
         <Route path="/404" element={<NotFound />} />
-
-        {/* catch-all: handles deeper paths like /foo/bar */}
+        {/* Catch-all: handles deeper paths */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 }
-
-

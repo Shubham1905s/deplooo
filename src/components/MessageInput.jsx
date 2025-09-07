@@ -1,4 +1,3 @@
-// src/components/MessageInput.jsx
 import { useEffect, useRef, useState } from "react";
 import { sendMessage } from "../services/chatService";
 
@@ -13,32 +12,28 @@ export default function MessageInput({ semesterId, currentUser = "Guest" }) {
     localStorage.setItem("displayName", name);
   }, [name]);
 
-  // autosize the textarea a bit (nice for code)
   useEffect(() => {
     const el = textRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = Math.min(el.scrollHeight, 200) + "px";
+    el.style.height = Math.min(el.scrollHeight, 170) + "px";
   }, [text]);
 
   const onSubmit = async (e) => {
     e?.preventDefault?.();
-    const trimmed = text.replace(/\s+$/g, ""); // keep newlines but trim trailing spaces
+    const trimmed = text.replace(/\s+$/g, "");
     if (!trimmed && !file) return;
-
     await sendMessage(semesterId, {
-      text: trimmed || null, // preserve newlines and tabs
+      text: trimmed || null,
       file,
       user: name || "Guest",
     });
-
     setText("");
     setFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const onKeyDown = (e) => {
-    // Enter to send, Shift+Enter for newline (Slack-style)
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       onSubmit();
@@ -53,25 +48,28 @@ export default function MessageInput({ semesterId, currentUser = "Guest" }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-
       <textarea
         ref={textRef}
         className="text"
-        placeholder="Type a message…  (Shift+Enter = newline)"
+        placeholder="Type a message…  (Shift+Enter for newline)"
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={onKeyDown}
         rows={2}
         spellCheck={false}
       />
-
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*,application/pdf,text/plain,application/json,application/xml"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
-
+      <label className="file-upload">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,application/pdf,text/plain,application/json,application/xml"
+          onChange={(e) => setFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+          style={{ display: "none" }}
+        />
+        <span>
+          {file ? file.name : "Choose File"}
+        </span>
+      </label>
       <button type="submit">Send</button>
     </form>
   );
