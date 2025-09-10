@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Copy, Check } from "lucide-react"; // icon library
+import { Copy, Check } from "lucide-react"; // icons
 
+// Helper to render message text (normal or code style, with truncation/expand)
 function renderMessageBody(text, expanded) {
   if (!text) return null;
   const looksLikeCode = /[\r\n\t{};<>]/.test(text);
@@ -15,18 +16,25 @@ function renderMessageBody(text, expanded) {
       </pre>
     );
   }
-  return <p className="text">{expanded ? text : text.slice(0, 200)}{text.length > 200 && !expanded && " ..."}</p>;
+
+  return (
+    <p className="text">
+      {expanded ? text : text.slice(0, 200)}
+      {text.length > 200 && !expanded && " ..."}
+    </p>
+  );
 }
 
 export default function MessageList({ messages }) {
   const bottomRef = useRef(null);
   const prevCount = useRef(0);
 
-  // Track copy states (which message was copied)
+  // Copy state
   const [copiedId, setCopiedId] = useState(null);
-  // Track expanded states
+  // Expanded messages
   const [expandedIds, setExpandedIds] = useState({});
 
+  // Auto-scroll when new messages arrive
   useEffect(() => {
     if (messages.length !== prevCount.current) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -34,6 +42,7 @@ export default function MessageList({ messages }) {
     }
   }, [messages]);
 
+  // Copy to clipboard
   const handleCopy = async (id, text) => {
     if (!text) return;
     try {
@@ -45,6 +54,7 @@ export default function MessageList({ messages }) {
     }
   };
 
+  // Expand/collapse long messages
   const toggleExpand = (id) => {
     setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -54,7 +64,10 @@ export default function MessageList({ messages }) {
       {messages.map((m) => {
         const expanded = expandedIds[m.id] || false;
         return (
-          <div key={m.id} className={`message${m.user === "Guest" ? "" : " self"}`}>
+          <div
+            key={m.id}
+            className={`message${m.user === "Guest" ? "" : " self"}`}
+          >
             <div className="meta">
               <span className="user">{m.user || "Guest"}</span>
               <span className="time">
@@ -64,11 +77,11 @@ export default function MessageList({ messages }) {
               </span>
             </div>
 
-            {/* Message body */}
+            {/* Text / Code */}
             {renderMessageBody(m.text, expanded)}
 
-            {/* Show more toggle */}
-            {m.text && (
+            {/* Show more/less */}
+            {m.text &&
               (m.text.length > 200 || m.text.split("\n").length > 10) && (
                 <button
                   className="show-more-btn"
@@ -76,10 +89,9 @@ export default function MessageList({ messages }) {
                 >
                   {expanded ? "Show less" : "Show more"}
                 </button>
-              )
-            )}
+              )}
 
-            {/* Copy button */}
+            {/* Copy */}
             {m.text && (
               <button
                 className="copy-btn"
@@ -89,7 +101,7 @@ export default function MessageList({ messages }) {
               </button>
             )}
 
-            {/* File attachment */}
+            {/* Attachments */}
             {m.fileUrl &&
               (m.fileType?.startsWith("image/") ? (
                 <img className="image" src={m.fileUrl} alt="attachment" />
@@ -106,6 +118,8 @@ export default function MessageList({ messages }) {
           </div>
         );
       })}
+
+      {/* Bottom marker for auto-scroll */}
       <div ref={bottomRef} />
     </div>
   );

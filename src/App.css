@@ -100,6 +100,11 @@ body, #root {
   background: linear-gradient(90deg, #151e3d 75%, var(--accent) 125%);
   border-bottom: 2px solid #1a2540;
   box-shadow: 0 2px 12px rgba(32,55,92,0.10);
+
+  /* Make sticky */
+  position: sticky;
+  top: 0;
+  z-index: 100; /* keeps it above messages */
 }
 
 .topbar h1 {
