@@ -18,7 +18,7 @@ It allows communities to chat together, share code snippets, and upload files.
 - **Frontend:** React (Vite), React Router
 - **Styling:** Custom CSS (dark theme, responsive)
 - **Icons:** [Lucide React](https://lucide.dev) (Copy/Check)
-- **Backend (Pluggable):** Firebase / any real-time service
+- **Backend (Pluggable):** Firebase 
 - **Deployment:** Vercel GitHub Pages
 
 ## 📂 Project Structure
