@@ -187,6 +187,7 @@ body, #root {
   background: #20232a;
   color: white;
   outline: none;
+  height: 44px;
 }
 
 /* Text + Emoji wrapper */
@@ -219,7 +220,8 @@ body, #root {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 35px;
+  padding: 4px;
   color: var(--accent);
 }
 
@@ -248,6 +250,7 @@ body, #root {
   min-width: 130px;
   text-align: center;
   transition: background 0.2s;
+  height: 44px;
 }
 .file-upload:hover {
   background: #353b54;
@@ -265,6 +268,7 @@ body, #root {
   border-radius: 8px;
   cursor: pointer;
   min-width: 90px;
+  height: 60px;
 }
 .message-input button[type="submit"]:hover {
   background: var(--accent-hover);
