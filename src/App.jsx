@@ -11,9 +11,10 @@ const SEMESTERS = [
   { slug: "for-every-fellas", name: "For Every Fellas" },
   { slug: "cyber-security", name: "Cyber Security" },
   { slug: "software-testing", name: "Software Testing" },
-  { slug: "dsv", name: "DSV" }
+  { slug: "dsv", name: "DSV" },
 ];
 
+// ✅ Home Page
 function Home() {
   return (
     <div className="home">
@@ -23,7 +24,6 @@ function Home() {
           <div key={s.slug} className="card-item">
             <h3>{s.name.toUpperCase()}</h3>
             <p>Join the chat for {s.name.toUpperCase()} Community</p>
-            {/* Use slug for the Link */}
             <Link to={`/${s.slug}`}>
               <button>Enter Chat</button>
             </Link>
@@ -34,9 +34,10 @@ function Home() {
   );
 }
 
+// ✅ Semester Chat Page
 function SemesterChat() {
   const { semesterId } = useParams();
-  const semester = SEMESTERS.find(s => s.slug === semesterId);
+  const semester = SEMESTERS.find((s) => s.slug === semesterId);
   if (!semester) return <NotFound />;
 
   const [messages, setMessages] = useState([]);
@@ -48,7 +49,7 @@ function SemesterChat() {
   }, [semester.slug]);
 
   const filtered = messages.filter(
-    m =>
+    (m) =>
       m.text?.toLowerCase().includes(search.toLowerCase()) ||
       m.user?.toLowerCase().includes(search.toLowerCase())
   );
@@ -61,7 +62,7 @@ function SemesterChat() {
           className="search-box"
           placeholder="Search messages..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <Link to="/">⬅ Back</Link>
       </header>
@@ -72,18 +73,31 @@ function SemesterChat() {
   );
 }
 
+// ✅ Footer Component (moved outside App)
+function Footer() {
+  return (
+    <footer className="footer">
+      <p>© 2025 Shubham. All rights reserved.</p>
+      <a href="mailto:shubhammirashi303@gmail.com" className="footer-email">
+        shubhammirashi303@gmail.com
+      </a>
+    </footer>
+  );
+}
+
+// ✅ Main App Component
 export default function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* Dynamic semester route */}
         <Route path="/:semesterId" element={<SemesterChat />} />
-        {/* Optional explicit 404 route */}
         <Route path="/404" element={<NotFound />} />
-        {/* Catch-all: handles deeper paths */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+      {/* Footer at the bottom */}
+      <Footer />
     </Router>
   );
 }

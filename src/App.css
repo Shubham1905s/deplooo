@@ -384,3 +384,26 @@ body, #root {
 .message-list::-webkit-scrollbar-track {
   background: #1a1a1a;
 }
+
+
+.footer {
+  text-align: center;
+  padding: 1rem 0;
+  background-color: #f4f6f9;
+  border-top: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 2rem;
+}
+
+.footer-email {
+  display: block;
+  color: #0078ff;
+  text-decoration: none;
+  margin-top: 0.3rem;
+  transition: color 0.3s ease;
+}
+
+.footer-email:hover {
+  color: #0056b3;
+}

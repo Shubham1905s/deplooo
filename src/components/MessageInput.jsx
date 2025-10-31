@@ -18,6 +18,7 @@ export default function MessageInput({ semesterId, currentUser = "Guest" }) {
     localStorage.setItem("displayName", name);
   }, [name]);
 
+
   useEffect(() => {
     const el = textRef.current;
     if (!el) return;
@@ -37,7 +38,7 @@ export default function MessageInput({ semesterId, currentUser = "Guest" }) {
   }, [showEmoji]);
 
 
- 
+
   const onSubmit = async (e) => {
     e?.preventDefault?.();
     const trimmed = text.replace(/\s+$/g, "");
@@ -116,3 +117,5 @@ export default function MessageInput({ semesterId, currentUser = "Guest" }) {
     </form>
   );
 }
+
+
